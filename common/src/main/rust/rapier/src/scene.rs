@@ -7,13 +7,13 @@ use dashmap::DashMap;
 use jni::JavaVM;
 use marten::Real;
 use marten::level::{ChunkSection, OctreeChunkSection};
-use rapier3d::dynamics::{
+use rapier3d_f64::dynamics::{
     CCDSolver, ImpulseJointSet, IslandManager, MultibodyJointSet, RigidBodyHandle, RigidBodySet,
 };
-use rapier3d::geometry::{ColliderSet, DefaultBroadPhase, NarrowPhase};
-use rapier3d::math::Vector;
-use rapier3d::na::Vector3;
-use rapier3d::pipeline::PhysicsPipeline;
+use rapier3d_f64::geometry::{ColliderSet, DefaultBroadPhase, NarrowPhase};
+use rapier3d_f64::math::Vector;
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::pipeline::PhysicsPipeline;
 use std::collections::HashMap;
 use std::sync::atomic::AtomicUsize;
 

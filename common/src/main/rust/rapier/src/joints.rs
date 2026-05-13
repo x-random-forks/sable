@@ -5,13 +5,13 @@ use jni::JNIEnv;
 use jni::objects::{JClass, JDoubleArray};
 use jni::sys::{jboolean, jdouble, jint, jlong};
 use marten::Real;
-use rapier3d::dynamics::{
+use rapier3d_f64::dynamics::{
     GenericJointBuilder, JointAxesMask, JointAxis, RevoluteJointBuilder, SpringCoefficients,
 };
-use rapier3d::glamx::Quat;
-use rapier3d::math::Vector;
-use rapier3d::na::Vector3;
-use rapier3d::prelude::{FixedJointBuilder, ImpulseJointHandle};
+use rapier3d_f64::glamx::DQuat;
+use rapier3d_f64::math::Vector;
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::prelude::{FixedJointBuilder, ImpulseJointHandle};
 use std::collections::HashMap;
 
 type SableJointHandle = jlong;
@@ -26,8 +26,8 @@ struct SubLevelJoint {
     normal_a: Vector3<f64>,
     normal_b: Vector3<f64>,
 
-    rotation_a: Option<Quat>,
-    rotation_b: Option<Quat>,
+    rotation_a: Option<DQuat>,
+    rotation_b: Option<DQuat>,
 
     handle: RapierJointHandle,
 
@@ -353,7 +353,7 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_add
         scene.rigid_bodies[&(id_b as LevelColliderID)]
     };
 
-    let quat = Quat::from_xyzw(
+    let quat = DQuat::from_xyzw(
         local_q_x as Real,
         local_q_y as Real,
         local_q_z as Real,
@@ -446,7 +446,7 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_add
         SpringCoefficients::new(JOINT_SPRING_FREQUENCY, JOINT_SPRING_DAMPING_RATIO),
     );
 
-    let quat = Quat::from_xyzw(
+    let quat = DQuat::from_xyzw(
         local_q_x as Real,
         local_q_y as Real,
         local_q_z as Real,
@@ -535,13 +535,13 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_add
 
     let locked_axes = JointAxesMask::from_bits_truncate(locked_axes_mask as u8);
 
-    let rotation_a = Quat::from_xyzw(
+    let rotation_a = DQuat::from_xyzw(
         local_q_x_a as Real,
         local_q_y_a as Real,
         local_q_z_a as Real,
         local_q_w_a as Real,
     );
-    let rotation_b = Quat::from_xyzw(
+    let rotation_b = DQuat::from_xyzw(
         local_q_x_b as Real,
         local_q_y_b as Real,
         local_q_z_b as Real,
@@ -618,7 +618,7 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_set
     };
 
     let position = Vector3::new(local_x as f64, local_y as f64, local_z as f64);
-    let rotation = Quat::from_xyzw(
+    let rotation = DQuat::from_xyzw(
         local_q_x as Real,
         local_q_y as Real,
         local_q_z as Real,

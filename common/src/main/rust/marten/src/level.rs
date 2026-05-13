@@ -81,15 +81,15 @@ unsafe impl<'local> Desc<'local, JMethodID> for &SableMethodID {
 pub struct VoxelColliderData {
     /// Collision boxes within the 0-1 voxel space.
     /// Formatted [min_x, min_y, min_z, max_x, max_y, max_z]
-    pub collision_boxes: Vec<(f32, f32, f32, f32, f32, f32)>,
+    pub collision_boxes: Vec<(f64, f64, f64, f64, f64, f64)>,
 
     /// If this should be treated as a fluid for buoyancy
     pub is_fluid: bool,
 
     /// The friction multiplier
-    pub friction: f32,
-    pub volume: f32,
-    pub restitution: f32,
+    pub friction: f64,
+    pub volume: f64,
+    pub restitution: f64,
 
     /// If this block has special contact behavior
     pub contact_events: Option<GlobalRef>,

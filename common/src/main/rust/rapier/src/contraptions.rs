@@ -4,13 +4,13 @@ use jni::JNIEnv;
 use jni::objects::{JClass, JDoubleArray, JIntArray};
 use jni::sys::{jdouble, jint};
 use marten::Real;
-use rapier3d::dynamics::RigidBodyBuilder;
-use rapier3d::geometry::{ColliderBuilder, SharedShape};
-use rapier3d::glamx::{Pose3, Quat};
-use rapier3d::math::Vector;
-use rapier3d::na::Vector3;
-use rapier3d::pipeline::{ActiveEvents, ActiveHooks};
-use rapier3d::prelude::{RigidBodyHandle, RigidBodyVelocity};
+use rapier3d_f64::dynamics::RigidBodyBuilder;
+use rapier3d_f64::geometry::{ColliderBuilder, SharedShape};
+use rapier3d_f64::glamx::{DPose3, DQuat};
+use rapier3d_f64::math::Vector;
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::pipeline::{ActiveEvents, ActiveHooks};
+use rapier3d_f64::prelude::{RigidBodyHandle, RigidBodyVelocity};
 
 use crate::collider::LevelCollider;
 use crate::groups::LEVEL_GROUP;
@@ -124,7 +124,7 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_set
         pose_arr[1] as Real,
         pose_arr[2] as Real,
     );
-    let quat = Quat::from_xyzw(
+    let quat = DQuat::from_xyzw(
         pose_arr[3] as Real,
         pose_arr[4] as Real,
         pose_arr[5] as Real,
@@ -142,7 +142,7 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_set
         return;
     }
 
-    let isometry = Pose3 {
+    let isometry = DPose3 {
         rotation: quat,
         translation: Vector::new(translation.x, translation.y, translation.z),
     };

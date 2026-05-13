@@ -1,9 +1,9 @@
 use criterion::{Criterion, criterion_group, criterion_main};
 use marten::Real;
 use marten::octree::SubLevelOctree;
-use rapier3d::math::Pose3;
-use rapier3d::na::Vector3;
-use rapier3d::prelude::ColliderHandle;
+use rapier3d_f64::math::DPose3;
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::prelude::ColliderHandle;
 use sable_rapier::ActiveLevelColliderInfo;
 use sable_rapier::algo::{DEFAULT_COLLISION_PARALLEL_CUTOFF, find_collision_pairs};
 use std::hint::black_box;
@@ -98,7 +98,7 @@ fn benchmark_find_collision_pairs(c: &mut Criterion) {
                 criterion::BenchmarkId::from_parameter(penetration),
                 penetration,
                 |b, &penetration| {
-                    let pose = Pose3::translation(124.25 - penetration * 8.0, 0.0, 0.0);
+                    let pose = DPose3::translation(124.25 - penetration * 8.0, 0.0, 0.0);
                     b.iter(|| {
                         let result = find_collision_pairs(
                             &sable_body_a,
@@ -124,7 +124,7 @@ fn benchmark_find_collision_pairs(c: &mut Criterion) {
                 criterion::BenchmarkId::from_parameter(penetration),
                 penetration,
                 |b, &penetration| {
-                    let pose = Pose3::translation(124.25 - penetration * 8.0, 0.0, 0.0);
+                    let pose = DPose3::translation(124.25 - penetration * 8.0, 0.0, 0.0);
                     b.iter(|| {
                         let result = find_collision_pairs(
                             &sable_body_a,

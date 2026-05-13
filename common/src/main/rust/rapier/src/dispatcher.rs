@@ -1,17 +1,17 @@
 use crate::collider::LevelCollider;
 use log::info;
-use rapier3d::geometry::{ContactManifoldData, Shape};
-use rapier3d::glamx::Pose3;
-use rapier3d::math::Vector;
-use rapier3d::na::Vector3;
-use rapier3d::parry::query::details::{NormalConstraints, contact_manifold_cuboid_cuboid_shapes};
-use rapier3d::parry::query::{
+use rapier3d_f64::geometry::{ContactManifoldData, Shape};
+use rapier3d_f64::glamx::DPose3;
+use rapier3d_f64::math::Vector;
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::parry::query::details::{NormalConstraints, contact_manifold_cuboid_cuboid_shapes};
+use rapier3d_f64::parry::query::{
     ClosestPoints, Contact, ContactManifold, ContactManifoldsWorkspace, DefaultQueryDispatcher,
     NonlinearRigidMotion, PersistentQueryDispatcher, QueryDispatcher, ShapeCastHit,
     ShapeCastOptions, Unsupported,
 };
-use rapier3d::prelude::ShapeType::Custom;
-use rapier3d::prelude::{Aabb, Real};
+use rapier3d_f64::prelude::ShapeType::Custom;
+use rapier3d_f64::prelude::{Aabb, Real};
 
 use crate::algo::find_collision_pairs;
 use crate::scene::{ChunkAccess, LevelColliderID, SableManifoldInfo};
@@ -62,7 +62,7 @@ impl SableDispatcher {
 impl QueryDispatcher for SableDispatcher {
     fn intersection_test(
         &self,
-        _pos12: &Pose3,
+        _pos12: &DPose3,
         g1: &dyn Shape,
         g2: &dyn Shape,
     ) -> Result<bool, Unsupported> {
@@ -72,7 +72,7 @@ impl QueryDispatcher for SableDispatcher {
 
     fn distance(
         &self,
-        _pos12: &Pose3,
+        _pos12: &DPose3,
         g1: &dyn Shape,
         g2: &dyn Shape,
     ) -> Result<Real, Unsupported> {
@@ -82,7 +82,7 @@ impl QueryDispatcher for SableDispatcher {
 
     fn contact(
         &self,
-        _pos12: &Pose3,
+        _pos12: &DPose3,
         g1: &dyn Shape,
         g2: &dyn Shape,
         _prediction: Real,
@@ -93,7 +93,7 @@ impl QueryDispatcher for SableDispatcher {
 
     fn closest_points(
         &self,
-        _pos12: &Pose3,
+        _pos12: &DPose3,
         g1: &dyn Shape,
         g2: &dyn Shape,
         _max_dist: Real,
@@ -108,7 +108,7 @@ impl QueryDispatcher for SableDispatcher {
 
     fn cast_shapes(
         &self,
-        _pos12: &Pose3,
+        _pos12: &DPose3,
         _local_vel12: Vector,
         _g1: &dyn Shape,
         _g2: &dyn Shape,
@@ -137,7 +137,7 @@ where
 {
     fn contact_manifolds(
         &self,
-        pos12: &Pose3,
+        pos12: &DPose3,
         g1: &dyn Shape,
         g2: &dyn Shape,
         prediction: Real,
@@ -221,7 +221,7 @@ where
 
     fn contact_manifold_convex_convex(
         &self,
-        _pos12: &Pose3,
+        _pos12: &DPose3,
         _g1: &dyn Shape,
         _g2: &dyn Shape,
         _normal_constraints1: Option<&dyn NormalConstraints>,
@@ -241,7 +241,7 @@ where
 
 impl SableDispatcher {
     fn static_world_vs_collider<ContactData: Default + Copy>(
-        pos12: &Pose3,
+        pos12: &DPose3,
         g1: &LevelCollider,
         g2: &dyn Shape,
         prediction: Real,
@@ -314,19 +314,19 @@ impl SableDispatcher {
                             manifolds.push(ContactManifold::new());
                         }
 
-                        let center = Vector3::new(
+                        let center = Vector3::<f64>::new(
                             ((min_x + max_x) / 2.0) as f64,
                             ((min_y + max_y) / 2.0) as f64,
                             ((min_z + max_z) / 2.0) as f64,
-                        ) + Vector3::new(x as f64, y as f64, z as f64)
+                        ) + Vector3::<f64>::new(x as f64, y as f64, z as f64)
                             - center_of_mass_1;
                         let center =
                             Vector::new(center.x as Real, center.y as Real, center.z as Real);
 
-                        let half_extents = Vector::new(
-                            (max_x - min_x) / 2.0,
-                            (max_y - min_y) / 2.0,
-                            (max_z - min_z) / 2.0,
+                        let half_extents: Vector3<f64> = Vector3::new(
+                            ((max_x - min_x) / 2.0) as Real,
+                            ((max_y - min_y) / 2.0) as Real,
+                            ((max_z - min_z) / 2.0) as Real,
                         );
 
                         // Translate to match the center of the current block
@@ -337,7 +337,7 @@ impl SableDispatcher {
                             DefaultQueryDispatcher
                                 .contact_manifold_convex_convex(
                                     &block_isometry,
-                                    &rapier3d::parry::shape::Cuboid::new(Vector::new(
+                                    &rapier3d_f64::parry::shape::Cuboid::new(Vector::new(
                                         half_extents.x,
                                         half_extents.y,
                                         half_extents.z,
@@ -354,7 +354,7 @@ impl SableDispatcher {
                                 .contact_manifold_convex_convex(
                                     &block_isometry.inverse(),
                                     g2,
-                                    &rapier3d::parry::shape::Cuboid::new(Vector::new(
+                                    &rapier3d_f64::parry::shape::Cuboid::new(Vector::new(
                                         half_extents.x,
                                         half_extents.y,
                                         half_extents.z,
@@ -396,7 +396,7 @@ impl SableDispatcher {
     }
 
     fn world_vs_world<ContactData: Default + Copy>(
-        pos12: &Pose3,
+        pos12: &DPose3,
         g1: &LevelCollider,
         g2: &LevelCollider,
         prediction: Real,
@@ -489,10 +489,10 @@ impl SableDispatcher {
                     - center_of_mass_1;
                 let center = Vector3::new(center.x as Real, center.y as Real, center.z as Real);
 
-                let half_extents = Vector3::new(
-                    (max_x - min_x) / 2.0,
-                    (max_y - min_y) / 2.0,
-                    (max_z - min_z) / 2.0,
+                let half_extents = Vector3::<f64>::new(
+                    ((max_x - min_x) / 2.0) as f64,
+                    ((max_y - min_y) / 2.0) as f64,
+                    ((max_z - min_z) / 2.0) as f64,
                 );
 
                 // Translate to match the center of the current block
@@ -565,10 +565,10 @@ impl SableDispatcher {
                         other_center.z as Real,
                     );
 
-                    let other_half_extents = Vector3::new(
-                        (other_max_x - other_min_x) / 2.0,
-                        (other_max_y - other_min_y) / 2.0,
-                        (other_max_z - other_min_z) / 2.0,
+                    let other_half_extents = Vector3::<f64>::new(
+                        ((other_max_x - other_min_x) / 2.0) as f64,
+                        ((other_max_y - other_min_y) / 2.0) as f64,
+                        ((other_max_z - other_min_z) / 2.0) as f64,
                     );
 
                     // combine block isometries
@@ -586,12 +586,12 @@ impl SableDispatcher {
                         ContactManifold::new();
                     contact_manifold_cuboid_cuboid_shapes(
                         &combined_block_isometry,
-                        &rapier3d::parry::shape::Cuboid::new(Vector::new(
+                        &rapier3d_f64::parry::shape::Cuboid::new(Vector::new(
                             half_extents.x,
                             half_extents.y,
                             half_extents.z,
                         )),
-                        &rapier3d::parry::shape::Cuboid::new(Vector::new(
+                        &rapier3d_f64::parry::shape::Cuboid::new(Vector::new(
                             other_half_extents.x,
                             other_half_extents.y,
                             other_half_extents.z,

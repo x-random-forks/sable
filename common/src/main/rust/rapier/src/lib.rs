@@ -18,8 +18,8 @@ mod voxel_collider;
 use jni::objects::{JClass, JDoubleArray, JIntArray};
 use jni::sys::{jboolean, jdouble, jint};
 use jni::{JNIEnv, JavaVM};
-use rapier3d::glamx::Quat;
-use rapier3d::math::Vector;
+use rapier3d_f64::glamx::DQuat;
+use rapier3d_f64::math::Vector;
 use std::collections::HashMap;
 
 use fern::colors::{Color, ColoredLevelConfig};
@@ -42,9 +42,9 @@ use marten::level::{
     OCTREE_CHUNK_SIZE, OctreeChunkSection, VoxelPhysicsState,
 };
 use marten::octree::SubLevelOctree;
-use rapier3d::na::{Matrix3, Vector3 as NaVector3};
-use rapier3d::parry::query::{DefaultQueryDispatcher, QueryDispatcher};
-use rapier3d::prelude::*;
+use rapier3d_f64::na::{Matrix3, Vector3 as NaVector3};
+use rapier3d_f64::parry::query::{DefaultQueryDispatcher, QueryDispatcher};
+use rapier3d_f64::prelude::*;
 use scene::{LevelColliderID, PhysicsScene};
 
 #[derive(Debug)]
@@ -477,7 +477,7 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_ste
             rope::tick(scene_id);
             joints::tick(scene_id);
 
-            state.integration_parameters.dt = time_step as f32;
+            state.integration_parameters.dt = time_step;
 
             let Some(scene) = state.scenes.get_mut(&scene_id) else {
                 panic!("No scene with given ID!");
@@ -609,7 +609,7 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_cre
     let mut pose_arr: [jdouble; 7] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     env.get_double_array_region(pose, 0, &mut pose_arr).unwrap();
 
-    let quat = Quat::from_xyzw(
+    let quat = DQuat::from_xyzw(
         pose_arr[3] as Real,
         pose_arr[4] as Real,
         pose_arr[5] as Real,
@@ -1125,7 +1125,7 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_tel
 
     let mut pose = *rb.position();
     pose.translation = Vector::new(x as Real, y as Real, z as Real);
-    pose.rotation = Quat::from_xyzw(i as Real, j as Real, k as Real, r as Real);
+    pose.rotation = DQuat::from_xyzw(i as Real, j as Real, k as Real, r as Real);
     rb.set_position(pose, true);
 }
 

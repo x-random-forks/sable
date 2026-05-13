@@ -2,9 +2,9 @@ use std::cmp::min;
 
 use marten::Real;
 use marten::level::OCTREE_CHUNK_SHIFT;
-use rapier3d::glamx::Pose3;
-use rapier3d::math::Vector;
-use rapier3d::na::{SimdComplexField, Vector3};
+use rapier3d_f64::glamx::DPose3;
+use rapier3d_f64::math::Vector;
+use rapier3d_f64::na::{SimdComplexField, Vector3};
 use rayon::iter::ParallelIterator;
 use rayon::prelude::{IntoParallelRefIterator, ParallelExtend};
 
@@ -17,7 +17,7 @@ pub const DEFAULT_COLLISION_PARALLEL_CUTOFF: usize = 256;
 pub fn find_collision_pairs(
     sable_body: &ActiveLevelColliderInfo,
     other_sable_body: Option<&ActiveLevelColliderInfo>,
-    isometry: &Pose3,
+    isometry: &DPose3,
     prediction: Real,
     cutoff: usize,
     liquid: bool,
@@ -164,7 +164,7 @@ fn get_overlapping_nodes(
     liquid: bool,
 ) -> (bool, Option<Vec<Vector3<i32>>>) {
     // biggest power of two that doesn't go over radius
-    let log2 = ((dist * 2.0).simd_ln() / 2.0f32.simd_ln()).floor() as i32;
+    let log2 = ((dist * 2.0).simd_ln() / 2.0f64.simd_ln()).floor() as i32;
 
     let log2 = if let Some(other_handle) = other_handle {
         let Some(oct) = &other_handle.octree else {

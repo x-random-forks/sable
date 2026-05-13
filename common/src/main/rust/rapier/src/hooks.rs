@@ -3,10 +3,10 @@ use jni::signature::ReturnType;
 use jni::sys::{jdouble, jint, jvalue};
 use marten::Real;
 use marten::level::VoxelColliderData;
-use rapier3d::geometry::{Collider, SolverContact};
-use rapier3d::math::{Pose, Vec3, Vector};
-use rapier3d::na::Vector3;
-use rapier3d::pipeline::{ContactModificationContext, PhysicsHooks};
+use rapier3d_f64::geometry::{Collider, SolverContact};
+use rapier3d_f64::math::{Pose, Vec3, Vector};
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::pipeline::{ContactModificationContext, PhysicsHooks};
 
 use crate::collider::LevelCollider;
 use crate::scene::LevelColliderID;

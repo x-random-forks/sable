@@ -1,4 +1,4 @@
-use rapier3d::prelude::{Group, InteractionGroups, InteractionTestMode};
+use rapier3d_f64::prelude::{Group, InteractionGroups, InteractionTestMode};
 
 pub const LEVEL_GROUP: InteractionGroups = InteractionGroups::new(
     Group::GROUP_1,

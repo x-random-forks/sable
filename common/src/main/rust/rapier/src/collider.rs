@@ -1,10 +1,10 @@
 use crate::PHYSICS_STATE;
 use crate::scene::LevelColliderID;
-use rapier3d::dynamics::MassProperties;
-use rapier3d::geometry::{Shape, ShapeType, TypedShape};
-use rapier3d::math::Vector;
-use rapier3d::parry::bounding_volume::{Aabb, BoundingSphere};
-use rapier3d::prelude::*;
+use rapier3d_f64::dynamics::MassProperties;
+use rapier3d_f64::geometry::{Shape, ShapeType, TypedShape};
+use rapier3d_f64::math::Vector;
+use rapier3d_f64::parry::bounding_volume::{Aabb, BoundingSphere};
+use rapier3d_f64::prelude::*;
 use std::f32::consts::PI;
 
 const WORLD_SIZE: Real = 30_000_000.0;
@@ -38,10 +38,10 @@ impl LevelCollider {
 impl RayCast for LevelCollider {
     fn cast_local_ray_and_get_normal(
         &self,
-        _ray: &rapier3d::parry::query::Ray,
+        _ray: &rapier3d_f64::parry::query::Ray,
         _max_time_of_impact: Real,
         _solid: bool,
-    ) -> Option<rapier3d::parry::query::RayIntersection> {
+    ) -> Option<rapier3d_f64::parry::query::RayIntersection> {
         todo!()
     }
 }
@@ -51,14 +51,14 @@ impl PointQuery for LevelCollider {
         &self,
         _pt: Vector,
         _solid: bool,
-    ) -> rapier3d::parry::query::PointProjection {
+    ) -> rapier3d_f64::parry::query::PointProjection {
         todo!()
     }
 
     fn project_local_point_and_get_feature(
         &self,
         _pt: Vector,
-    ) -> (rapier3d::parry::query::PointProjection, FeatureId) {
+    ) -> (rapier3d_f64::parry::query::PointProjection, FeatureId) {
         todo!()
     }
 }
@@ -151,6 +151,6 @@ impl Shape for LevelCollider {
     }
 
     fn ccd_angular_thickness(&self) -> Real {
-        PI / 8.0
+        (PI / 8.0).into()
     }
 }

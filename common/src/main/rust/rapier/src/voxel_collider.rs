@@ -5,7 +5,7 @@ use jni::objects::{JClass, JDoubleArray, JObject};
 use jni::sys::{jboolean, jdouble, jint};
 use marten::Real;
 use marten::level::{SableMethodID, VoxelColliderData};
-use rapier3d::na::Vector3;
+use rapier3d_f64::na::Vector3;
 
 use crate::get_physics_state_mut;
 
@@ -114,12 +114,12 @@ pub extern "system" fn Java_dev_ryanhcode_sable_physics_impl_rapier_Rapier3D_add
 
     if let Some(data) = &mut state.voxel_collider_map.voxel_colliders[index as usize] {
         data.collision_boxes.push((
-            bounds[0] as f32,
-            bounds[1] as f32,
-            bounds[2] as f32,
-            bounds[3] as f32,
-            bounds[4] as f32,
-            bounds[5] as f32,
+            bounds[0],
+            bounds[1],
+            bounds[2],
+            bounds[3],
+            bounds[4],
+            bounds[5],
         ));
     }
 }

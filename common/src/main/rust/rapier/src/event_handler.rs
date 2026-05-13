@@ -1,10 +1,10 @@
 use crate::collider::LevelCollider;
 use crate::{PHYSICS_STATE, ReportedCollision};
-use rapier3d::dynamics::RigidBodySet;
-use rapier3d::geometry::{ColliderSet, CollisionEvent, ContactPair};
-use rapier3d::na::Vector3;
-use rapier3d::pipeline::EventHandler;
-use rapier3d::prelude::*;
+use rapier3d_f64::dynamics::RigidBodySet;
+use rapier3d_f64::geometry::{ColliderSet, CollisionEvent, ContactPair};
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::pipeline::EventHandler;
+use rapier3d_f64::prelude::*;
 
 pub struct SableEventHandler {
     pub scene_id: i32,

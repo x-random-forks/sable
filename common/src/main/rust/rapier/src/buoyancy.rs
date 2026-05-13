@@ -5,11 +5,11 @@ use crate::{
     scene::PhysicsScene,
 };
 use marten::Real;
-use rapier3d::dynamics::RigidBody;
-use rapier3d::geometry::Aabb;
-use rapier3d::math::Vector;
-use rapier3d::na::Vector3;
-use rapier3d::prelude::RigidBodyVelocity;
+use rapier3d_f64::dynamics::RigidBody;
+use rapier3d_f64::geometry::Aabb;
+use rapier3d_f64::math::Vector;
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::prelude::RigidBodyVelocity;
 
 pub fn compute_buoyancy(scene: &mut PhysicsScene) {
     let state = unsafe { get_physics_state_mut() };

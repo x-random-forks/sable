@@ -4,11 +4,11 @@ use jni::JNIEnv;
 use jni::objects::{JClass, JDoubleArray};
 use jni::sys::{jboolean, jdouble, jint, jlong, jsize};
 use marten::Real;
-use rapier3d::dynamics::{GenericJointBuilder, JointAxis, RigidBodyBuilder, SpringCoefficients};
-use rapier3d::geometry::{ColliderBuilder, SharedShape};
-use rapier3d::math::Vector;
-use rapier3d::na::Vector3;
-use rapier3d::prelude::{
+use rapier3d_f64::dynamics::{GenericJointBuilder, JointAxis, RigidBodyBuilder, SpringCoefficients};
+use rapier3d_f64::geometry::{ColliderBuilder, SharedShape};
+use rapier3d_f64::math::Vector;
+use rapier3d_f64::na::Vector3;
+use rapier3d_f64::prelude::{
     ImpulseJointHandle, ImpulseJointSet, JointAxesMask, RigidBodyHandle, RopeJointBuilder,
 };
 
