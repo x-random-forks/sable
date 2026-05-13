@@ -5,7 +5,7 @@ use rapier3d_f64::geometry::{Shape, ShapeType, TypedShape};
 use rapier3d_f64::math::Vector;
 use rapier3d_f64::parry::bounding_volume::{Aabb, BoundingSphere};
 use rapier3d_f64::prelude::*;
-use std::f32::consts::PI;
+use std::f64::consts::PI;
 
 const WORLD_SIZE: Real = 30_000_000.0;
 
@@ -151,6 +151,6 @@ impl Shape for LevelCollider {
     }
 
     fn ccd_angular_thickness(&self) -> Real {
-        (PI / 8.0).into()
+        PI / 8.0
     }
 }
